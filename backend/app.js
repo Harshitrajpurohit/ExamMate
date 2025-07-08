@@ -33,9 +33,8 @@ app.use(cors({
 
 main()
 
-app.post("/",(req,res)=>{
+app.get("/",(req,res)=>{
     try {
-        const {topic, level, type, prevQuestions} = req.body;
         res.send("/ page");
     } catch (error) {
         res.status(400).json({ message : "error"})
