@@ -14,22 +14,22 @@ dotenv.config();
 app.use(express.json())
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = [
-  process.env.FRONTEND_SERVER_API,
-  'http://localhost:3000'
-];
+    const allowedOrigins = [process.env.FRONTEND_SERVER_API ,'http://localhost:3000'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
+    const corsOptions = {
+      origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        } else {
+          return callback(new Error('Not allowed by CORS'));
+        }
+      },
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    };
 
+    app.use(cors(corsOptions));
 
 main()
 
