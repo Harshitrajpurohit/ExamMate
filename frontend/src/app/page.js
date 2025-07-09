@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import Hero from "./_sections/Hero";
 import { auth } from "@/auth";
+import FeaturesSection from "./_sections/Feature";
 
 export default async function Home(){
 
@@ -14,6 +15,8 @@ export default async function Home(){
   return (
     <>
     <Hero/>
+    <FeaturesSection/>
+    
     </>
   )
 }
