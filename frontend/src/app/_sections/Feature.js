@@ -63,10 +63,10 @@ export default function FeaturesSection() {
     ];
 
     return (
-        <section className="h-screen py-20 px-10" id="features">
+        <section className="h-screen py-20 px-5 md:px-10" id="features">
             <h2 className="w-full align-middle text-3xl md:text-4xl">Features</h2>
             <div
-                className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-10 px-10  relative z-1 max-w-7xl mx-auto">
+                className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-10 px-5 relative z-1 max-w-7xl mx-auto">
                 {features.map((feature, index) => (
                     <Feature key={feature.title} {...feature} index={index} />
                 ))}
@@ -85,7 +85,7 @@ const Feature = ({
     return (
         <div
             className={cn(
-                "flex flex-col lg:border-r  py-7 relative group/feature dark:border-neutral-800",
+                "flex flex-col lg:border-r py-7 relative group/feature dark:border-neutral-800",
                 (index === 0 || index === 4) && "lg:border-l dark:border-neutral-800",
                 index < 4 && "lg:border-b dark:border-neutral-800"
             )}>
