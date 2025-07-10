@@ -63,8 +63,8 @@ export default function FeaturesSection() {
     ];
 
     return (
-        <section className="h-screen py-20 px-5 md:px-10" id="features">
-            <h2 className="w-full align-middle text-3xl md:text-4xl">Features</h2>
+        <section className="h-full lg:h-screen py-5 md:py-20 px-5 md:px-10" id="features">
+            <h2 className="w-full text-3xl flex flex-col items-center md:text-4xl">Features</h2>
             <div
                 className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-10 px-5 relative z-1 max-w-7xl mx-auto">
                 {features.map((feature, index) => (

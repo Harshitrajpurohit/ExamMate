@@ -29,8 +29,8 @@ export function NavbarDemo() {
       link: "#pricing",
     },
     {
-      name: "Contact",
-      link: "#contact",
+      name: "Dashboard",
+      link: "#dashboard",
     },
   ];
 

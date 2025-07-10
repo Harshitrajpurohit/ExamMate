@@ -15,7 +15,7 @@ const levelOptions = [
   "Expert (FAANG-level system design & scalability)"
 ]
 
-const typeOptions = ["Mixed", "Conceptual", "Coding", "MCQ"];
+const typeOptions = ["Conceptual", "Coding", "MCQ"];
 
 export default function Page() {
   const [topic, setTopic] = useState("");
@@ -79,12 +79,12 @@ export default function Page() {
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
         placeholder="Enter a topic (e.g., JavaScript)"
-        className="w-full border px-4 py-2 rounded mb-3"
+        className="w-full border border-gray-500 px-4 py-2 rounded mb-3 "
       />
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
-        className="w-full border px-4 py-2 rounded mb-3"
+        className="w-full border px-4 py-2 rounded border-gray-500 mb-3"
       >
         {
           typeOptions.map((type, index) => (
@@ -95,7 +95,7 @@ export default function Page() {
       <select
         value={level}
         onChange={(e) => setLevel(e.target.value)}
-        className="w-full border px-4 py-2 rounded mb-3 "
+        className="w-full border border-gray-500 px-4 py-2 rounded mb-3 "
       >
         {
           levelOptions.map((level, index) => (
