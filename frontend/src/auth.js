@@ -9,9 +9,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const resStatus = await addtoDB(user);
             console.log("resStatus: ", resStatus);
 
-            if (resStatus !== 200) {
-                return false;
-            }
+            // if (resStatus !== 200) {
+            //     return false;
+            // }
             return true;
         }
     }
