@@ -1,8 +1,9 @@
 "use client"
+
 import { TextareaWithButton } from "@/components/texrarea-chedcn";
 import { useState } from "react";
 
-export default function page() {
+export default function Page() {
     const [answers,setAnswers] = useState([
   {
     "step": 1,
