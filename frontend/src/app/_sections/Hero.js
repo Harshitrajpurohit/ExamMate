@@ -11,10 +11,15 @@ export default function Hero() {
           Your Exam Mate
         </h2>
 
-        <div className="inline-block">
+        <div className="flex gap-5 justify-center">
           <Link href="/interviewQuestionGenerator">
             <button className="px-6 py-3 rounded-xl font-semibold border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300">
-              Interview Questions
+              Get Interview
+            </button>
+          </Link>
+          <Link href="/answerGenerator">
+            <button className="px-6 py-3 rounded-xl font-semibold border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300">
+              Ask Question
             </button>
           </Link>
         </div>

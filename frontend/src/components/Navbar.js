@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { useEffect, useState } from "react";
 import { SignOut } from "./signout";
+import ThemeToggler from "./ThemeToggler";
 
 export function NavbarDemo() {
 
@@ -22,7 +23,7 @@ export function NavbarDemo() {
   const navItems = [
     {
       name: "Features",
-      link: "#features",
+      link: "/#features",
     },
     {
       name: "Pricing",
@@ -44,6 +45,7 @@ export function NavbarDemo() {
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
+            <ThemeToggler/>
             {!session?.user ? (
               <NavbarButton variant="secondary" href="/signin">Login</NavbarButton>
             ):(
@@ -57,12 +59,14 @@ export function NavbarDemo() {
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
+            
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+              
           </MobileNavHeader>
-
           <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
+            <ThemeToggler/>
             {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}

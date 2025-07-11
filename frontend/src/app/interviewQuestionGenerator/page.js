@@ -71,8 +71,8 @@ export default function Page() {
 
 
   return (
-    <main className="pt-20 p-5 h-full max-w-xl mx-auto mb-5">
-      <h1 className="text-3xl font-bold mb-4">AI Interview Question Generator</h1>
+    <main className="pt-20 p-5 h-full max-w-2xl mx-auto mb-5">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4">AI Interview Question Generator</h1>
       {alert && <Alert message={alertMessage}/>}
       <input
         type="text"
@@ -88,7 +88,7 @@ export default function Page() {
       >
         {
           typeOptions.map((type, index) => (
-            <option key={index} className="bg-gray-900" value={type}>{type}</option>
+            <option key={index} className="bg-white dark:bg-gray-900" value={type}>{type}</option>
           ))
         }
       </select>
@@ -99,13 +99,13 @@ export default function Page() {
       >
         {
           levelOptions.map((level, index) => (
-            <option key={index} className="bg-gray-900 " value={level}>{level}</option>
+            <option key={index} className="bg-white dark:bg-gray-900" value={level}>{level}</option>
           ))
         }
       </select>
       <button
         onClick={generate}
-        className="bg-blue-600 text-black dark:text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-gray-600 dark:bg-blue-600 text-white dark:text-white px-4 py-2 rounded hover:bg-gray-700 dark:hover:bg-blue-700 transition-all duration-200 cursor-pointer"
       >
         {loading ? 'Generating...' : 'Generate'}
       </button> {questions.length>0 && <CopyToClipboardButton textToCopy={questions}/>}
@@ -116,7 +116,7 @@ export default function Page() {
             <li key={index} className="text-black dark:text-white">
               <p className="font-medium">{question.question}</p>
               {question?.options && (
-                <ul className="pl-4 text-gray-300 mt-2 space-y-1">
+                <ul className="pl-4 text-gray-800 dark:text-gray-300 mt-2 space-y-1">
                   {question.options.map((option, idx) => (
                     <li key={idx}>{option}</li>
                   ))}

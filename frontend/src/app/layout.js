@@ -1,7 +1,6 @@
 import { SessionProvider } from "next-auth/react"
 import {NavbarDemo} from "@/components/Navbar"
 import React from "react";
-
 import "./globals.css";
 
 
@@ -27,11 +26,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" >
+      <body className="dark">
         <SessionProvider>
-        <NavbarDemo/>
-        {children}
+          <NavbarDemo/>
+          {children}
         </SessionProvider>
       </body>
     </html>

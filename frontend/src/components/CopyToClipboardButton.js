@@ -27,7 +27,7 @@ const CopyToClipboardButton = ({ textToCopy }) => {
     };
 
     return (
-        <button onClick={handleCopy} className='px-2 py-2 rounded hover:bg-gray-800 transition-all duration-200'>
+        <button onClick={handleCopy} className='px-2 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-800 transition-all duration-200'>
             {copied ? 'Copied!' : 'Copy Questions'}
         </button>
     );

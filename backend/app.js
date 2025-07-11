@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
-import {generateQuestions} from  "./services/langchain.js"
+import {generateQuestions} from  "./services/Interview_langchain.js"
 import main from "./models/ConnectDB.js"
 import User from "./models/userSchema.js"
 import Question from "./models/questionSchema.js"
 import storeQuestion from "./functions/storeQuestions.js";
+import { generateAnswer } from "./services/answer_langchain.js";
 const app = express()
 
 dotenv.config();
@@ -97,6 +98,18 @@ app.post("/api/generate/", async(req, res) => {
     res.status(400).json({ error: "faild to fetch data" });
   }
 });
+
+app.post("/api/answer", async(req, res) => {
+   try {
+    const question = req.body;
+    console.log(question);
+    const answer = await generateAnswer(question.question);
+    console.log(answer);
+    res.status(200).json(answer);
+   } catch (error) {
+    res.status(400).json({err:"not get answer"})
+   }
+})
 
 
 app.post("/api/googleSignIn", async(req, res) => {
