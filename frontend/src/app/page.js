@@ -31,7 +31,7 @@ export default function Home() {
   const addtoDB = async (user) => {
     try {
       if (!user?.name || !user?.email) {
-        console.warn("⛔ Missing user data");
+        console.warn("Missing user data");
         return;
       }
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/googleSignIn`, {
