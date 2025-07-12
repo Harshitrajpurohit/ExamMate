@@ -115,6 +115,9 @@ app.post("/api/answer", async(req, res) => {
 app.post("/api/googleSignIn", async(req, res) => {
   try {
     const { name, email, image} = req.body;
+    console.log(name);
+    console.log(email);
+    console.log(image);
     const user = await User.findOne({email});
 
     if(!user){

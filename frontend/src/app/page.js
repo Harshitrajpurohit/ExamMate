@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 
 
 export default function Home() {
-const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -18,30 +18,44 @@ const { data: session, status } = useSession();
     }
   }, [status, router]);
 
-  useEffect(()=>{
-    if(status=="authenticated"  && session?.user){
+  useEffect(() => {
+    if (status == "authenticated" && session?.user) {
       const alreadyAdded = localStorage.getItem("addedUser");
-      if(!alreadyAdded  || alreadyAdded !== session?.user.email){
-        addtoDB(session.user);
+      if (!alreadyAdded || alreadyAdded !== session?.user.email) {
+        addtoDB(session?.user);
         localStorage.setItem("addedUser", session?.user.email);
       }
     }
-  },[status, session])
+  }, [status, session])
 
   const addtoDB = async (user) => {
     try {
+      if (!user?.name || !user?.email) {
+        console.warn("⛔ Missing user data");
+        return;
+      }
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/googleSignIn`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(user),
-      })
-      console.log("login Successfull", res)
+        body: JSON.stringify({
+          name: user.name,
+          email: user.email,
+          image: user.image
+        }),
+      });
+
+      if (res.ok) {
+        console.log("User added successfully");
+      } else {
+        const error = await res.json();
+        console.error("Backend rejected request:", error);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Network or server error:", err);
     }
-  }
+  };
 
   return (
     <>
