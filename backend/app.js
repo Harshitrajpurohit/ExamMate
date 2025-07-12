@@ -114,24 +114,21 @@ app.post("/api/answer", async(req, res) => {
 
 app.post("/api/googleSignIn", async(req, res) => {
   try {
-    const {id, name, email, image} = req.body;
-
+    const { name, email, image} = req.body;
     const user = await User.findOne({email});
 
     if(!user){
       const newUser = new User({
-        userId:id,
         name,
         email,
         image
       })
-      const data = await newUser.save();
-      console.log("data: ",data);
+      await newUser.save();
     }
 
-    return res.status(200).json({message:"Sussessfull"});
+    return res.status(200).json({message:"Successfull"});
   } catch (error) {
-    res.status(400).json({ error: "faild to fetch data" });
+    res.status(400).json({ error: "faild to add" });
   }
 });
 

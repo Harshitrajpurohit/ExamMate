@@ -20,7 +20,7 @@ const typeOptions = ["Conceptual", "Coding", "MCQ"];
 export default function Page() {
   const [topic, setTopic] = useState("");
   const [level, setLevel] = useState("Select options");
-  const [type, setType] = useState("Mixed");
+  const [type, setType] = useState("Conceptual");
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState("");
   const [showanswer, setShowanswer] = useState(false);
