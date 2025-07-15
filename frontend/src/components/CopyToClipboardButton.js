@@ -8,11 +8,23 @@ const CopyToClipboardButton = ({ textToCopy }) => {
 
     const handleCopy = async () => {
         try {
-
+            
             const onlyQuestions = textToCopy.map((q, i) => {
-                let questionText = `${i + 1}. ${q.question}`;
-                if (q.options) {
+                let questionText = `${i + 1}. ${q?.question || q?.problem_statement}`;
+                if (q?.options) {
                     const optionsText = q.options.map(opt => `   ${opt}`).join('\n');
+                    questionText += `\n${optionsText}`;
+                }
+                if (q?.approach) {
+                    const optionsText = `\nApproach: ${q?.approach}`;
+                    questionText += `\n${optionsText}`;
+                }
+                if (q?.Code) {
+                    const optionsText = `\n ${q?.code}`;
+                    questionText += `\n${optionsText}`;
+                }
+                if (q?.explanation) {
+                    const optionsText = `\n ${q?.explanation}`;
                     questionText += `\n${optionsText}`;
                 }
                 return questionText;

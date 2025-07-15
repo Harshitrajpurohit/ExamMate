@@ -5,6 +5,7 @@ import {generateQuestions} from  "./services/Interview_langchain.js"
 import main from "./models/ConnectDB.js"
 import User from "./models/userSchema.js"
 import Question from "./models/questionSchema.js"
+import Answer from "./models/answerSchema.js";
 import storeQuestion from "./functions/storeQuestions.js";
 import { generateAnswer } from "./services/answer_langchain.js";
 const app = express()
@@ -15,9 +16,9 @@ dotenv.config();
 app.use(express.json())
 const port = process.env.PORT || 5000;
 
-    const allowedOrigins = [process.env.FRONTEND_SERVER_API ,'http://localhost:3000'];
+const allowedOrigins = [process.env.FRONTEND_SERVER_API ,'http://localhost:3000'];
 
-    const corsOptions = {
+const corsOptions = {
       origin: function (origin, callback) {
         if (!origin) return callback(null, true);
         if (allowedOrigins.includes(origin)) {
@@ -28,14 +29,15 @@ const port = process.env.PORT || 5000;
       },
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
-    };
+};
 
-    app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 main()
 
 app.get("/",(req,res)=>{
     try {
+      console.log("hello");
         res.send("/ page");
     } catch (error) {
         res.status(400).json({ message : "error"})
@@ -63,7 +65,7 @@ app.post("/api/test",async (req,res)=>{
             tags
           });
           const savedQuestion = await newQuestion.save(); 
-          console.log("question:", savedQuestion);
+
           res.status(200).json(savedQuestion);
       
     } catch (error) {
@@ -79,8 +81,6 @@ app.post("/api/generate/", async(req, res) => {
 
     let questions = await generateQuestions(topic,level,type,prevQuestions); 
     let sameQuestions = JSON.parse(questions);
-    res.status(200).json(questions);
-
     if(typeof questions !== "object"){
       const user = await User.findOne({email:userEmail});
       if(!user){
@@ -93,6 +93,7 @@ app.post("/api/generate/", async(req, res) => {
           return;
         }
       }
+    res.status(200).json(questions);
 
   } catch (error) {
     res.status(400).json({ error: "faild to fetch data" });
@@ -101,13 +102,21 @@ app.post("/api/generate/", async(req, res) => {
 
 app.post("/api/answer", async(req, res) => {
    try {
-    const question = req.body;
-    console.log(question);
-    const answer = await generateAnswer(question.question);
-    console.log(answer);
-    res.status(200).json(answer);
+    const {question, userEmail} = req.body;
+
+    const data = await generateAnswer(question);
+    const questionData = new Answer({
+      createdBy:userEmail,
+      question:question,
+      description:data,
+    })
+    await questionData.save();
+
+    res.status(200).json(data);
+    
    } catch (error) {
-    res.status(400).json({err:"not get answer"})
+    console.log(error)
+    res.status(500).json({err:"did not get answer"})
    }
 })
 
@@ -115,9 +124,6 @@ app.post("/api/answer", async(req, res) => {
 app.post("/api/googleSignIn", async(req, res) => {
   try {
     const { name, email, image} = req.body;
-    console.log(name);
-    console.log(email);
-    console.log(image);
     const user = await User.findOne({email});
 
     if(!user){

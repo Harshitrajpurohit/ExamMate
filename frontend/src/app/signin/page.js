@@ -15,7 +15,7 @@ export default async function page() {
                 "use server"
                 await signIn("google", {redirectTo:"/"})
             }}>
-                <button type="submit" className='flex items-center border rounded px-3 py-2 border-black hover:bg-black text-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white hover:-skew-y-2 cursor-pointer bg:hover:text-black  transition-all duration-150 uppercase'>
+                <button type="submit" className='flex items-center border rounded px-3 py-2 border-black hover:bg-black text-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white hover:-skew-y-2 cursor-pointer dark:hover:text-black  transition-all duration-150 uppercase'>
                     signin with <FcGoogle className="text-2xl ml-2"/>
                     </button>
             </form>

@@ -72,7 +72,8 @@ export default function Page() {
 
   return (
     <main className="pt-20 p-5 h-full max-w-2xl mx-auto mb-5">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4">AI Interview Question Generator</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-4">Generate Questions Instantly</h1>
+
       {alert && <Alert message={alertMessage}/>}
       <input
         type="text"
