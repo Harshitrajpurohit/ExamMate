@@ -28,9 +28,9 @@ export default function Page() {
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(false);
 
-  const {data:session} = useSession()
+  const { data: session } = useSession()
 
-  if(!session?.user){
+  if (!session?.user) {
     redirect("/signin")
   }
 
@@ -52,9 +52,9 @@ export default function Page() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/generate/`, {
       method: 'POST',
       headers: {
-    "Content-Type": "application/json"
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({userEmail, topic, level, type, prevQuestions })
+      body: JSON.stringify({ userEmail, topic, level, type, prevQuestions })
     });
 
     const data = await res.json();
@@ -65,7 +65,7 @@ export default function Page() {
     }
 
     setQuestions(parsedData);
-    setPrevQuestions((prev) => [...prev , ...parsedData])
+    setPrevQuestions((prev) => [...prev, ...parsedData])
     setLoading(false)
   }
 
@@ -74,7 +74,7 @@ export default function Page() {
     <main className="pt-20 p-5 h-full max-w-2xl mx-auto mb-5">
       <h1 className="text-2xl md:text-3xl font-bold mb-4">Generate Questions Instantly</h1>
 
-      {alert && <Alert message={alertMessage}/>}
+      {alert && <Alert message={alertMessage} />}
       <input
         type="text"
         value={topic}
@@ -109,29 +109,25 @@ export default function Page() {
         className="bg-gray-600 dark:bg-blue-600 text-white dark:text-white px-4 py-2 rounded hover:bg-gray-700 dark:hover:bg-blue-700 transition-all duration-200 cursor-pointer"
       >
         {loading ? 'Generating...' : 'Generate'}
-      </button> {questions.length>0 && <CopyToClipboardButton textToCopy={questions}/>}
-
-      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm mt-5">
-        <ul className="list-decimal pl-4 space-y-3">
-          {questions.map((question, index) => (
-            <li key={index} className="text-black dark:text-white">
-              <p className="font-medium">{question.question}</p>
-              {question?.options && (
-                <ul className="pl-4 text-gray-800 dark:text-gray-300 mt-2 space-y-1">
-                  {question.options.map((option, idx) => (
-                    <li key={idx}>{option}</li>
-                  ))}
-                </ul>
-              )}
-              {/* <button onClick={() => setShowanswer(!showanswer)} className="text-blue-400">{!showanswer ?  "Show Answer" : "Hide Answer"}</button>
-              <p className={`font-sm ${showanswer ? 'block' : 'hidden'}`}>Answers: <br /> {question.answer}</p> */}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-
-
+      </button> {questions.length > 0 && <CopyToClipboardButton textToCopy={questions} />}
+        <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm mt-5">
+          <ul className="list-decimal pl-4 space-y-3">
+            {questions.map((question, index) => (
+              <li key={index} className="text-black dark:text-white">
+                <p className="font-medium">{question.question}</p>
+                {question?.options && (
+                  <ul className="pl-4 text-gray-800 dark:text-gray-300 mt-2 space-y-1">
+                    {question.options.map((option, idx) => (
+                      <li key={idx}>{option}</li>
+                    ))}
+                  </ul>
+                )}
+                {/* <button onClick={() => setShowanswer(!showanswer)} className="text-blue-400">{!showanswer ?  "Show Answer" : "Hide Answer"}</button>
+                <p className={`font-sm ${showanswer ? 'block' : 'hidden'}`}>Answers: <br /> {question.answer}</p> */}
+              </li>
+            ))}
+          </ul>
+        </div>
     </main>
   );
 }
