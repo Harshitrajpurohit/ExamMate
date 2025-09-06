@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next"
 import { SessionProvider } from "next-auth/react"
 import {NavbarDemo} from "@/components/Navbar"
 import React from "react";
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <NavbarDemo/>
           {children}
+          <Analytics />
         </SessionProvider>
       </body>
     </html>
