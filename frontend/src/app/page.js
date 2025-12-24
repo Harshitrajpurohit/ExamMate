@@ -12,11 +12,6 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
-  }, [status, router]);
 
   useEffect(() => {
     if (status == "authenticated" && session?.user) {
@@ -34,7 +29,7 @@ export default function Home() {
         console.warn("Missing user data");
         return;
       }
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/googleSignIn`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/auth/googleSignIn`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

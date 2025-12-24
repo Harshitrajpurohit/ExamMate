@@ -49,7 +49,7 @@ export default function Page() {
     }
     setLoading(true);
     const userEmail = session?.user?.email;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/generate/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/questions/generate/`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -57,12 +57,22 @@ export default function Page() {
       body: JSON.stringify({ userEmail, topic, level, type, prevQuestions })
     });
 
-    const data = await res.json();
-    const parsedData = JSON.parse(data);
-    if (!res.ok) {
-      alert(data.error);
+    if (res.status === 429) {
+      const errorData = await res.json();
+      alert(errorData.error || "Too many requests. Please try again later.");
+      setLoading(false);
       return;
     }
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      alert(errorData.error || "Something went wrong!");
+      setLoading(false);
+      return;
+    }
+
+    const data = await res.json();
+    const parsedData = JSON.parse(data);
 
     setQuestions(parsedData);
     setPrevQuestions((prev) => [...prev, ...parsedData])
@@ -108,26 +118,26 @@ export default function Page() {
         onClick={generate}
         className="bg-gray-600 dark:bg-blue-600 text-white dark:text-white px-4 py-2 rounded hover:bg-gray-700 dark:hover:bg-blue-700 transition-all duration-200 cursor-pointer"
       >
-        {loading ? 'Generating...' : 'Generate'}
+        {loading ? 'Generating...' : 'Generate Questions'}
       </button> {questions.length > 0 && <CopyToClipboardButton textToCopy={questions} />}
-        <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm mt-5">
-          <ul className="list-decimal pl-4 space-y-3">
-            {questions.map((question, index) => (
-              <li key={index} className="text-black dark:text-white">
-                <p className="font-medium">{question.question}</p>
-                {question?.options && (
-                  <ul className="pl-4 text-gray-800 dark:text-gray-300 mt-2 space-y-1">
-                    {question.options.map((option, idx) => (
-                      <li key={idx}>{option}</li>
-                    ))}
-                  </ul>
-                )}
-                {/* <button onClick={() => setShowanswer(!showanswer)} className="text-blue-400">{!showanswer ?  "Show Answer" : "Hide Answer"}</button>
+      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm mt-5">
+        <ul className="list-decimal pl-4 space-y-3">
+          {questions.map((question, index) => (
+            <li key={index} className="text-black dark:text-white">
+              <p className="font-medium">{question.question}</p>
+              {question?.options && (
+                <ul className="pl-4 text-gray-800 dark:text-gray-300 mt-2 space-y-1">
+                  {question.options.map((option, idx) => (
+                    <li key={idx}>{option}</li>
+                  ))}
+                </ul>
+              )}
+              {/* <button onClick={() => setShowanswer(!showanswer)} className="text-blue-400">{!showanswer ?  "Show Answer" : "Hide Answer"}</button>
                 <p className={`font-sm ${showanswer ? 'block' : 'hidden'}`}>Answers: <br /> {question.answer}</p> */}
-              </li>
-            ))}
-          </ul>
-        </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </main>
   );
 }

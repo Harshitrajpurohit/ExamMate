@@ -50,7 +50,6 @@ Return a JSON object:
 - Keep the JSON clean and valid.
 - Do not return markdown or formatting characters. Only plain JSON.
 `;
-
     const response = await model.invoke(answerPrompt);
 
     const ans =  response.content.trim()
