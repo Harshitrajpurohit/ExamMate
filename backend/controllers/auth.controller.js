@@ -1,4 +1,4 @@
-import User from "../models/userSchema";
+import User from "../models/userSchema.js";
 
 export const googleSignIn = async (req, res) => {
     try {
