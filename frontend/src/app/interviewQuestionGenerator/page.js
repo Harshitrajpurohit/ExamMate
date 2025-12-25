@@ -1,8 +1,6 @@
 "use client"
 import Alert from "@/components/Alert";
 import CopyToClipboardButton from "@/components/CopyToClipboardButton";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { useState } from "react";
 
 
@@ -18,6 +16,8 @@ const levelOptions = [
 const typeOptions = ["Conceptual", "Coding", "MCQ"];
 
 export default function Page() {
+
+
   const [topic, setTopic] = useState("");
   const [level, setLevel] = useState("Select options");
   const [type, setType] = useState("Conceptual");
@@ -27,12 +27,6 @@ export default function Page() {
   const [prevQuestions, setPrevQuestions] = useState([]);
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(false);
-
-  const { data: session } = useSession()
-
-  if (!session?.user) {
-    redirect("/signin")
-  }
 
   const generate = async () => {
     if (topic === "") {
@@ -48,13 +42,13 @@ export default function Page() {
       return;
     }
     setLoading(true);
-    const userEmail = session?.user?.email;
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/questions/generate/`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userEmail, topic, level, type, prevQuestions })
+      credentials:"include",
+      body: JSON.stringify({ topic, level, type, prevQuestions })
     });
 
     if (res.status === 429) {

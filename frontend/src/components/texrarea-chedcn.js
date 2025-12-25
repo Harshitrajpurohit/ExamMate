@@ -7,19 +7,18 @@ import { useSession } from "next-auth/react";
 export function TextareaWithButton({ setAnswers }) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession()
 
   const generate = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const userEmail = session?.user?.email;
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/answer`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question, userEmail })
+        credentials:"include",
+        body: JSON.stringify({ question })
       })
       const data = await res.json();
       if (res.status === 429) {

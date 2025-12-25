@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next"
-import { SessionProvider } from "next-auth/react"
-import {NavbarDemo} from "@/components/Navbar"
+import { NavbarDemo } from "@/components/Navbar"
+import { AuthProvider } from "./context/AuthContext"
 import React from "react";
 import "./globals.css";
 
@@ -29,11 +29,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" >
       <body className="dark">
-        <SessionProvider>
-          <NavbarDemo/>
+        <AuthProvider>
+          <NavbarDemo />
           {children}
           <Analytics />
-        </SessionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

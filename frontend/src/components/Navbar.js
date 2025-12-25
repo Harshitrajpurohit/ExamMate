@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 
 import {
   Navbar,
@@ -13,12 +12,15 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useEffect, useState } from "react";
-import { SignOut } from "./signout";
 import ThemeToggler from "./ThemeToggler";
+import { useAuth } from "@/app/context/AuthContext";
+import Alert from "./Alert";
 
 export function NavbarDemo() {
 
-  const { data: session } = useSession()
+
+  const { authenticated, loading } = useAuth();
+  const [error, setError] = useState("");
 
   const navItems = [
     {
@@ -37,21 +39,39 @@ export function NavbarDemo() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const handleLogOut = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER_API}/api/auth/logout`, {
+      method: 'POST',
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error);
+    }
+    
+  }
+
   return (
     <div className="w-full fixed z-40">
+      {error && <Alert message={error} />}
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <ThemeToggler/>
-            {!session?.user ? (
+            <ThemeToggler />
+            {(!loading && authenticated) ? (
+
+              <NavbarButton variant="secondary" onClick={handleLogOut}>Logout</NavbarButton>
+            ) : (
               <NavbarButton variant="secondary" href="/signin">Login</NavbarButton>
-            ):(
-              <NavbarButton variant="secondary"><SignOut/></NavbarButton>
             )}
-            
+
           </div>
         </NavBody>
 
@@ -59,14 +79,14 @@ export function NavbarDemo() {
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
-            
+
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-              
+
           </MobileNavHeader>
           <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
-            <ThemeToggler/>
+            <ThemeToggler />
             {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}
@@ -77,21 +97,21 @@ export function NavbarDemo() {
               </a>
             ))}
             <div className="flex w-full flex-col gap-4">
-              {!session?.user ? (
+              {(!loading && authenticated) ? (
                 <NavbarButton
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => { setIsMobileMenuOpen(false); handleLogOut(); }}
                   variant="primary"
                   className="w-full"
-                  href="/signin">
-                  Login
+                >
+                  Logout
                 </NavbarButton>
               ) : (
                 <NavbarButton
                   onClick={() => setIsMobileMenuOpen(false)}
                   variant="primary"
                   className="w-full"
-                  >
-                  <SignOut/>
+                  href="/signin">
+                  Login
                 </NavbarButton>
               )}
 

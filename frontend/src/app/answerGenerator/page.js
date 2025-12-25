@@ -1,19 +1,9 @@
 "use client"
-
 import { TextareaWithButton } from "@/components/texrarea-chedcn";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { space } from "postcss/lib/list";
 import { useState } from "react";
 
 export default function Page() {
   const [answers, setAnswers] = useState([]);
-  const {data:session} = useSession()
-
-  if(!session?.user){
-    redirect("/signin")
-  }
-
   return (
     <div className="flex flex-col items-center py-20  px-5 md:px-10">
       <h2 className="text-3xl mb-5 font-semibold text-gray-800 dark:text-white">
@@ -23,7 +13,7 @@ export default function Page() {
 
       <TextareaWithButton setAnswers={setAnswers} />
       <div className="w-full md:w-2xl lg:w-3xl bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm mt-5 ">
-        {answers.map((answer, index) => (
+        {answers?.map((answer, index) => (
           answer?.code || answer?.options ? (
           answer?.code ? (
             <li key={index} className="text-black dark:text-white py-2 font-normal flex flex-col gap-3">
