@@ -5,10 +5,11 @@ export async function generateQuestions(topic, level, type, prevQuestions) {
     const previouslyGenerated = prevQuestions.map(q => `- ${q.question}`).join('\n');
     try {
         const model = new ChatGoogleGenerativeAI({
-            model: "gemini-2.0-flash",
+            model: "gemini-2.5-flash-lite",
             apiKey: process.env.GEMINI_API_KEY,
             temperature: 0.3,
             maxOutputTokens: 1024,
+            maxRetries: 2,
         });
 
 const interviewPrompt = `
@@ -19,7 +20,7 @@ The difficulty level should be: "${level}".
 Use ONLY the question type: "${type}" — do not mix types.
 
 ### Instructions:
-- Do NOT repeat or rephrase any question from this list: ${previouslyGenerated}
+
 - Keep the total response under 800 tokens.
 - Return a valid JSON array of exactly 5 objects.
 - NO markdown, NO explanations, NO intro/outro text.
@@ -76,9 +77,11 @@ Each object must have:
         return cleanedResponse;
     } catch (error) {
         console.error("LangChain Gemini Error:", error);
-        return { error: "Model invocation failed" };;
+        return { error: "Model invocation failed" };
     }
 }
 
 
 // export default generateQuestions;
+
+// - Do NOT repeat or rephrase any question from this list: ${previouslyGenerated}

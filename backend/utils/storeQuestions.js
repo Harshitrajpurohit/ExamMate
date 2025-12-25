@@ -1,4 +1,3 @@
-import User from "../models/userSchema.js"
 import Question from "../models/questionSchema.js"
 
 async function storeQuestion(userEmail, sameQuestions, topic, level) {
@@ -16,7 +15,6 @@ async function storeQuestion(userEmail, sameQuestions, topic, level) {
       });
       await backResponse.save();
     }
-
     return {message:"Question added Successfully."}
 
   } catch (err) {

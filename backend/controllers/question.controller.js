@@ -2,6 +2,7 @@ import User from "../models/userSchema.js"
 import Question from "../models/questionSchema.js"
 import { generateQuestions } from "../services/interview.service.js";
 import storeQuestion from "../utils/storeQuestions.js";
+import jwt from "jsonwebtoken"
 
 export const createQuestion = async (req, res) => {
     try {
@@ -34,28 +35,27 @@ export const createQuestion = async (req, res) => {
 
 export const generateQuestionSet = async (req, res) => {
     try {
-        const { userEmail, topic, level, type, prevQuestions } = req.body;
-
+        const {topic, level, type, prevQuestions } = req.body;
         let questions = await generateQuestions(topic, level, type, prevQuestions);
         if(questions?.error){
             return res.status(429).json({error:"Free Plan exceed, Buy Premium"})
         }
         let sameQuestions = JSON.parse(questions);
-        if (typeof questions !== "object") {
-            const user = await User.findOne({ email: userEmail });
-            if (!user) {
-                res.status(400).json({ error: "not loggedIn" });
-                return;
-            }
-            const backResponse = storeQuestion(userEmail, sameQuestions, topic, level);
-            if (backResponse?.error) {
-                res.status(400).json({ error: "Question not stored in database" });
-                return;
-            }
+        const token = await req.cookies.token;
+        let verification = jwt.verify(token, process.env.JWT_TOKEN_SECRET_KEY);
+        const user = await User.findOne({ email: verification.email });
+        if (!user) {
+            res.status(400).json({ error: "not loggedIn" });
+            return;
+        }
+        const backResponse = await storeQuestion(verification.email, sameQuestions, topic, level);
+        if (backResponse?.error) {
+            res.status(400).json({ error: "Question not stored in database" });
+            return;
         }
         res.status(200).json(questions);
 
     } catch (error) {
-        res.status(400).json({ error: "faild to fetch data" });
+        res.status(400).json({  error: "Internal server error"  });
     }
 }
